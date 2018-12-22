@@ -7,13 +7,12 @@ import { GET_ENTRY_DATA } from "../redux/actionTypes";
 
 class EntryRenderer extends Component {
   componentDidMount() {
-    const { entry } = this.props;
-    this.props.getDataEntry(entry);
+    const { activeEntry } = this.props;
+    this.props.getDataEntry(activeEntry);
   }
 
   render() {
     const { data } = this.props;
-    console.log(data);
 
     return (
       <ListGroup style={{ marginTop: 30 }}>
@@ -29,7 +28,8 @@ class EntryRenderer extends Component {
 
 const mapStateToProps = state => {
   return {
-    data: state.entry.results
+    data: state.app.entry.results,
+    activeEntry: state.app.entry.active
   };
 };
 

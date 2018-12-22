@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux'
 
@@ -8,7 +8,6 @@ import Header from './components/Header';
 import EntryRenderer from './components/EntryRenderer';
 import { GET_NAVIGATION_LIST } from "./redux/actionTypes";
 
-// circleprogress
 class AppRenderer extends Component {
   componentDidMount() {
     this.props.getNavigationList();
@@ -38,7 +37,7 @@ class AppRenderer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    list: state.navList
+    list: state.app.navList
   };
 };
 

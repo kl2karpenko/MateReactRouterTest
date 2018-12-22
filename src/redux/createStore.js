@@ -1,16 +1,30 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { devToolsEnhancer } from "redux-devtools-extension";
-// import { routerReducer } from 'react-router-redux'
+import { routerMiddleware, routerReducer } from 'react-router-redux';
+import history from './history';
 
 import {
   GET_ENTRY_DATA,
-  GET_NAVIGATION_LIST
+  GET_NAVIGATION_LIST,
+  SET_ACTIVE_ENTRY_TYPE
 } from './actionTypes';
 
 const initialState = {
-  navList: {},
-  entry: {}
+  app: {
+    navList: {},
+    entry: {
+      active: 'people'
+    }
+  },
+  routing: {}
 };
+
+const enhancer = compose(
+  applyMiddleware(
+    routerMiddleware(history)
+  ),
+  devToolsEnhancer()
+);
 
 function appReducer(state = initialState, action) {
   console.log(action, ' action dispatched in redux');
@@ -26,7 +40,19 @@ function appReducer(state = initialState, action) {
     case GET_ENTRY_DATA:
       return {
         ...state,
-        entry: action.payload.data
+        entry: {
+          ...state.entry,
+          ...action.payload.data
+        }
+      };
+
+    case SET_ACTIVE_ENTRY_TYPE:
+      return {
+        ...state,
+        entry: {
+          ...state.entry,
+          active: action.payload.active
+        }
       };
 
     default:
@@ -35,8 +61,12 @@ function appReducer(state = initialState, action) {
 }
 
 const store = createStore(
-  appReducer,
-  devToolsEnhancer()
+  combineReducers({
+    app: appReducer,
+    routing: routerReducer
+  }),
+  initialState,
+  enhancer
 );
 
 export default store;
