@@ -22,7 +22,7 @@ export default class HomePageRenderer extends Component {
       <div>
         <Route path={`${this.props.match.path}/slon`} component={(props) => {
           return <div>
-            <Slon {...props}></Slon>
+            <Slon {...props} />
           </div>;
         }} />
         <Route path={`${this.props.match.path}/person`} component={() => {

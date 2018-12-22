@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Route, NavLink, Switch } from "react-router-dom";
 import { Nav, NavItem } from 'reactstrap';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Users from './components/Users'
 import HomePageRenderer from './components/HomePageRenderer'
 
 class App extends Component {
-  componentDidMount() {
-    /// fetch -> get urls
-    // this.state.urls => []
-  }
-
   render() {
     return (
       <BrowserRouter>
@@ -40,11 +36,12 @@ class App extends Component {
             </NavItem>
           </Nav>
 
-          {/*<Route path="/home" component={() => { return <div>Home</div> }} />*/}
-          <Route path="/home/:pages?" component={HomePageRenderer} />
-          <Route path="/login" component={() => { return <div>Login</div> }} />
-          <Route path="/users/:id?" component={Users} />
-          <Route component={() => { return <h1>Notfound</h1> }} />
+          <Switch>
+            <Route path="/home/:pages?" component={HomePageRenderer} />
+            <Route path="/login" component={() => { return <div>Login</div> }} />
+            <Route path="/users/:id?" component={Users} />
+            <Route path='*' component={() => { return <h1>Notfound</h1> }} />
+          </Switch>
         </div>
       </BrowserRouter>
     );
