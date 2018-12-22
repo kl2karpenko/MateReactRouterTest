@@ -1,0 +1,2 @@
+export const GET_NAVIGATION_LIST = 'GET_NAVIGATION_LIST';
+export const GET_ENTRY_DATA = 'GET_ENTRY_DATA';

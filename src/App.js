@@ -2,17 +2,26 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import React, { Component } from 'react';
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
+
+import createBrowserHistory from 'history/createBrowserHistory';
+import { Provider } from 'react-redux'
+
+import store from './redux/createStore';
 
 import AppRenderer from './AppRenderer';
 
-// circleprogress
+const history = createBrowserHistory();
+
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <AppRenderer />
-      </BrowserRouter>
+      <Provider store={store}>
+        { /* Tell the Router to use our enhanced history */ }
+        <Router history={history}>
+          <AppRenderer />
+        </Router>
+      </Provider>
     );
   }
 }

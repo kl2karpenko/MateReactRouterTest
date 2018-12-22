@@ -1,50 +1,55 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
 
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { getDataEntry } from '../utils/api';
+import { GET_ENTRY_DATA } from "../redux/actionTypes";
 
 class EntryRenderer extends Component {
-  state = {
-    list: [],
-    loading: true,
-    errMessage: null
-  };
-
   componentDidMount() {
     const { entry } = this.props;
-
-    getDataEntry(entry)
-      .then(({ results }) => {
-        this.setState({
-          list: results,
-          loading: false,
-          errMessage: null
-        })
-      }, err =>
-        this.setState({
-          loading: false,
-          errMessage: 'Some error occurs'
-        })
-      );
+    this.props.getDataEntry(entry);
   }
 
   render() {
-    const { list, loading, errMessage } = this.state;
+    const { data } = this.props;
+    console.log(data);
 
     return (
-      loading ?
-        <h3>Loading</h3> :
-        (errMessage ?
-          <div>errMessage</div> :
-        <ListGroup style={{ marginTop: 30 }}>
-          {list && list.map(({ name, title }) => (
-            <ListGroupItem key={name || title}>
-              {name || title}
-            </ListGroupItem>
-          ))}
-        </ListGroup>)
+      <ListGroup style={{ marginTop: 30 }}>
+        {data && data.map(({ name, title }) => (
+          <ListGroupItem key={name || title}>
+            {name || title}
+          </ListGroupItem>
+        ))}
+      </ListGroup>
     );
   }
 }
 
-export default EntryRenderer;
+const mapStateToProps = state => {
+  return {
+    data: state.entry.results
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getDataEntry: entry => {
+      getDataEntry(entry)
+        .then(results => {
+          dispatch({
+            type: GET_ENTRY_DATA,
+            payload: {
+              data: results
+            }
+          });
+        });
+    }
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EntryRenderer);
